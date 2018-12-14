@@ -21,6 +21,25 @@ massive(CONNECTION_STRING).then(db => {
   app.listen(port, () => console.log(`server is running at port ${port}`));
 })
 
+app.get('/api/posts/:id', async (req, res) => {
+  let { id } = req.params;
+  let { userposts, search } = req.query;
+  const db = req.app.get('db');
+  if(userposts && search) {
+    let posts = await db.get_specific_post([ search ]);
+    res.status(200).send(posts);
+  } else if (!userposts && !search) {
+    let posts = await db.get_post([ id ])
+    res.status(200).send(posts);
+  } else if(!userposts && search) {
+    let posts = await db.get_specific2([ id, search ]);
+    res.status(200).send(posts);
+  } else {
+    let all = await db.get_all_posts()
+    res.status(200).send(posts);
+  }
+})
+
 app.post('/auth/signup', async (req, res) => {
   let { username, password } = req.body;
   const db = req.app.get('db');

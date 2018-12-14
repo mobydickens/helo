@@ -44,9 +44,8 @@ class Auth extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <div>Helo</div>
+      <div className='auth'>
+          <div className='helo'>Helo</div>
           <input 
             onChange={ (e) => this.setState({ username: e.target.value }) }
             type="text"
@@ -57,7 +56,6 @@ class Auth extends Component {
             value={ this.state.password }/><br/>
           <button onClick={ this.login }>Login</button>
           <button onClick={ this.getPerson }>Register</button>
-        </div>
       </div>
     );
   }
