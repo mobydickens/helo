@@ -13,10 +13,12 @@ class Nav extends Component {
       <div>
         {location.pathname === '/' ? " " : 
           <div>
-            <div>Welcome, { this.props.username === undefined ? "User!" : this.props.username }</div>
-            <Link to='/dashboard'><button>Home</button></Link>
-            <Link to='/post/3'><button>New Post</button></Link>
-            <Link to='/'><button>Logout</button></Link>
+            <div className='sidebar'>
+              <div>Welcome, { this.props.username === undefined ? "User!" : this.props.username }</div>
+              <Link to='/dashboard'><button>Home</button></Link>
+              <Link to='/post/3'><button>New Post</button></Link>
+              <Link to='/'><button>Logout</button></Link>
+            </div>
           </div>}
       </div>
     )
