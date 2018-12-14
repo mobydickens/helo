@@ -36,8 +36,8 @@ app.get('/api/posts/:id', async (req, res) => {
     res.status(200).send(posts);
   } else if (userposts) {
     console.log('hit all posts iffy');
-    let all = await db.get_all_posts()
-    res.status(200).send(all)
+    let all = await db.get_all_posts();
+    res.status(200).send(all);
   }
   // } else if (!userposts && !search) {
   //   let posts = await db.get_post([ id ])
