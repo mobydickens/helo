@@ -10,12 +10,26 @@ class Auth extends Component {
       username: '',
       password: ''
     }
-    this.getPerson = this.getPerson.bind(this)
+    this.getPerson = this.getPerson.bind(this);
+    this.login = this.login.bind(this);
   }
 
   async getPerson() {
     const { username, password } = this.state;
     let res = await axios.post('/auth/signup', { username, password });
+    this.setState({
+      username: '',
+      password: ''
+    })
+    if(res.data.loggedIn) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
+  async login() {
+    const { username, password } = this.state;
+    let res = await axios.post('/auth/login', { username, password });
+    console.log(res.data.loggedIn)
     this.setState({
       username: '',
       password: ''
@@ -38,7 +52,7 @@ class Auth extends Component {
             onChange={ (e) => this.setState({ password: e.target.value }) }
             type="password"
             value={ this.state.password }/><br/>
-          <button>Login</button>
+          <button onClick={ this.login }>Login</button>
           <button onClick={ this.getPerson }>Register</button>
         </div>
       </div>

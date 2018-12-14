@@ -26,13 +26,30 @@ app.post('/auth/signup', async (req, res) => {
   const db = req.app.get('db');
   let person = await db.find_user([ username ]);
   if(person[0]) { 
-    return res.status(200).send('Username already in use!')
+    return res.status(200).send({loggedIn: false, message: 'Username already in use!'})
   } else {
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync( password, salt );
     let createUser = await db.create_user([ username, hash ]);
     req.session.user = { username: createUser[0].username, id: createUser[0].id };
     res.status(200).send({loggedIn: true, message: 'you did it'});
+  }
+})
+
+app.post('/auth/login', async (req, res) => {
+  let { username, password } = req.body;
+  const db = req.app.get('db');
+  let person = await db.find_user([ username ]);
+  if(!person[0]) { 
+    return res.status(200).send('No valid username found!')
+  } else {
+    let result = bcrypt.compareSync( password, person[0].hash_value );
+    if(result) {
+      req.session.user = { username: person[0].username, id: person[0].id };
+      return res.status(200).send({loggedIn: true, message: 'login success!'});
+    } else {
+      return res.status(401).send({loggedIn: false, message: 'incorrect password'});
+    }
   }
 })
 
