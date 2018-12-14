@@ -26,8 +26,8 @@ class Dashboard extends Component {
       this.setState({
         posts: res.data
       })
-    } else {
-    let res = await axios.get(`/api/posts/${userId}`, { userposts: checked});
+    } else if (checked === true) {
+    let res = await axios.get(`/api/posts/${userId}?userposts=true`,);
       this.setState({
         posts: res.data
       })
@@ -50,7 +50,7 @@ class Dashboard extends Component {
   resetSearch = () => {
     let { userId } = this.props;
     if(this.state.checked) {
-      axios.get(`/api/posts/${userId}`, { userposts: true }).then(res => {
+      axios.get(`/api/posts/${userId}/?userposts=true`).then(res => {
         this.setState({
           posts: res.data,
           search: ''
@@ -80,7 +80,10 @@ class Dashboard extends Component {
       <div className='dashboard'>
         <div className='main-col'>
           <div className='search-row'>
-            <input type="search" onChange={ (e) => this.setState({ search: e.target.value }) }/>
+            <input 
+              type="search" 
+              onChange={ (e) => this.setState({ search: e.target.value }) }
+              value={ this.state.search }/>
             <button onClick={ () => this.getPosts() }>Search</button>
             <button onClick={ () => this.resetSearch() }>Reset</button>
             <label><input onClick={ this.changeCheckbox } type="checkbox"/>My Posts</label>

@@ -17,14 +17,15 @@
 
 .helo {
   font-size: 30px;
+
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 70px;
+  width: 80px;
   height: 100vh;
-  background-color: black;
+  background-color: darkcyan;
 }
 
 .dashboard {
