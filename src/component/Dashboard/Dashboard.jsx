@@ -7,8 +7,8 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
       this.state = {
-        search: [], 
-        checked: true,
+        search: '', 
+        checked: false,
         posts: []
       }
       this.getPosts = this.getPosts.bind(this);
@@ -20,10 +20,18 @@ class Dashboard extends Component {
 
   async getPosts() {
     let { userId } = this.props;
-    let res = await axios.get(`/api/posts/${userId}`);
-    this.setState({
-      posts: res.data
-    })
+    let { checked, search } = this.state;
+    if(checked === true && search ) {
+      let res = await axios.get(`/api/posts/${userId}?userposts=true&search=${search}`)
+      this.setState({
+        posts: res.data
+      })
+    } else {
+    let res = await axios.get(`/api/posts/${userId}`, { userposts: checked});
+      this.setState({
+        posts: res.data
+      })
+    }
     // let { checked, search } = this.state;
     // if(search) {
     //   let res = await axios.get(`/api/posts/${userId}`, { userposts: checked, search: search })
@@ -63,7 +71,7 @@ class Dashboard extends Component {
       return (
         <div key={i} className='each-post'>
           <div>{post.title}</div>
-          <div>{post.username}</div>
+          <div>Posted by: {post.username}</div>
           <div>{post.post}</div>
         </div>
       )

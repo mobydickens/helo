@@ -23,14 +23,20 @@ massive(CONNECTION_STRING).then(db => {
 
 app.get('/api/posts/:id', async (req, res) => {
   let { id } = req.params;
+  let { userposts, search } = req.query;
   const db = req.app.get('db');
-  let all = await db.get_all_posts()
-  console.log(all)
-  res.status(200).send(all)
-  // let { userposts, search } = req.query;
-  // if(userposts && search) {
-  //   let posts = await db.get_specific_post([ search ]);
-  //   res.status(200).send(posts);
+  console.log('query params', userposts, search);
+  if(userposts && search) {
+    console.log('hit first iffy');
+    let posts = await db.get_specific_post([ `%${search}%` ]);
+    console.log('some', posts);
+    res.status(200).send(posts);
+  } else if (userposts) {
+    console.log('hit second iffy');
+    let all = await db.get_all_posts()
+    console.log('all', all)
+    res.status(200).send(all)
+  }
   // } else if (!userposts && !search) {
   //   let posts = await db.get_post([ id ])
   //   res.status(200).send(posts);
