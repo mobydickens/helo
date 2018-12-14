@@ -32,7 +32,7 @@ app.post('/auth/signup', async (req, res) => {
     let hash = bcrypt.hashSync( password, salt );
     let createUser = await db.create_user([ username, hash ]);
     req.session.user = { username: createUser[0].username, id: createUser[0].id };
-    res.status(200).send({loggedIn: true, message: 'you did it'});
+    res.status(200).send({ loggedIn: true, username: person[0].username, id: person[0].id });
   }
 })
 
@@ -46,7 +46,7 @@ app.post('/auth/login', async (req, res) => {
     let result = bcrypt.compareSync( password, person[0].hash_value );
     if(result) {
       req.session.user = { username: person[0].username, id: person[0].id };
-      return res.status(200).send({loggedIn: true, message: 'login success!'});
+      return res.status(200).send({ loggedIn: true, username: person[0].username, id: person[0].id });
     } else {
       return res.status(401).send({loggedIn: false, message: 'incorrect password'});
     }
